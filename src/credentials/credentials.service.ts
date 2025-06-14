@@ -22,6 +22,15 @@ export class CredentialsService {
   return credential;
 }
 
+async findAll(): Promise<Credential[]> {
+  const credentials = await this.credentialsRepo.find();
+  return credentials.map(c => ({
+    ...c,
+    password: decrypt(c.password),
+  }));
+}
+
+
 //   async grantAccessToUser(owner: User, credentialId: string, targetUserId: string) {
 //   const credential = await this.credentialsRepo.findOne({
 //     where: { id: credentialId },

@@ -36,7 +36,7 @@ async function bootstrap() {
   });
 
   app.use(cookieParser());
-  console.log(bcrypt.hashSync('admin123', 10))
+  //console.log(bcrypt.hashSync('admin', 10))
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

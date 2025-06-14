@@ -21,10 +21,10 @@ export class CredentialsController {
     return this.service.create(req.user, dto);
   }
 
-//   @Get()
-//   findAll(@Request() req) {
-//     return this.service.findAllForUser(req.user);
-//   }
+  @Get()
+  findAll(@Request() req) {
+    return this.service.findAll();
+  }
 
   @Get(':id')
   findOne(@Request() req, @Param('id') id: string) {
