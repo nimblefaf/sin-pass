@@ -11,8 +11,16 @@ import { AccessService } from 'src/access/access.service';
 export class CredentialsService {
   constructor(
     @InjectRepository(Credential)
-    private credentialsRepo: Repository<Credential>,
+    private readonly credentialsRepo: Repository<Credential>,
+    private readonly accessService: AccessService
   ) {}
+
+  async findOneSecure(id: string, userId: number): Promise<Credential> {
+  await this.accessService.assertAccess(userId, id);
+  const credential = await this.credentialsRepo.findOne({ where: { id: id.toString() } });
+  if (!credential) throw new NotFoundException();
+  return credential;
+}
 
 //   async grantAccessToUser(owner: User, credentialId: string, targetUserId: string) {
 //   const credential = await this.credentialsRepo.findOne({
@@ -27,7 +35,9 @@ export class CredentialsService {
 
 //   return AccessService.grantAccess(target, credential);
 // }
-
+  async findById(credentialId: string): Promise<Credential | null> {
+    return this.credentialsRepo.findOne({ where: { id: credentialId } });
+  }
 
 
   async create(user: User, dto: { name: string; login: string; password: string }) {

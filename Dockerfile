@@ -1,21 +1,23 @@
-# Используем Node.js образ
-FROM node:20-alpine
+# Use the official Node.js image as the base image
+FROM node:22
 
-# Установка рабочей директории
-WORKDIR /app
+# Set the working directory inside the container
+WORKDIR /usr/src/app
 
-# Копируем package файлы и устанавливаем зависимости
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
-RUN npm install --production
 
-# Копируем весь исходный код
+# Install the application dependencies
+RUN npm install
+
+# Copy the rest of the application files
 COPY . .
 
-# Компилируем TypeScript
+# Build the NestJS application
 RUN npm run build
 
-# Открываем порт (замени на тот, который у тебя в .env)
+# Expose the application port
 EXPOSE 3000
 
-# Запускаем приложение
+# Command to run the application
 CMD ["node", "dist/main"]
